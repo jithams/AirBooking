@@ -7,6 +7,9 @@ __pycache__/
 *.sqlite3
 *.log
 .env
+*.pot
+*.py[cod]
+*$py.class
 
 # -------------------------
 # React / Frontend
@@ -22,5 +25,10 @@ frontend/.git
 .DS_Store
 Thumbs.db
 *.swp
+*.swo
+*.idea/
+*.vscode/
 
-frontend/
+# Ignore frontend folder if you plan to add it separately or as a submodule
+# Remove this line if you want frontend tracked
+# frontend/

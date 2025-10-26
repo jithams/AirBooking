@@ -1,4 +1,4 @@
-# flights/api_views.py
+
 from rest_framework import generics, permissions, status, serializers as drf_serializers
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from .models import Flight, Booking
 from .serializers import FlightSerializer, BookingSerializer
 
-# Flight search/list (authenticated)
+
 class FlightSearchAPIView(generics.ListAPIView):
     serializer_class = FlightSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -25,13 +25,12 @@ class FlightSearchAPIView(generics.ListAPIView):
             qs = qs.filter(departure_time__date=date)
         return qs
 
-# Flight detail
 class FlightDetailAPIView(generics.RetrieveAPIView):
     queryset = Flight.objects.all()
     serializer_class = FlightSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-# Booking create
+
 class BookingCreateAPIView(generics.CreateAPIView):
     serializer_class = BookingSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -45,7 +44,7 @@ class BookingCreateAPIView(generics.CreateAPIView):
         flight.save()
         serializer.save(user=self.request.user)
 
-# List bookings for the current user
+
 class UserBookingsListAPIView(generics.ListAPIView):
     serializer_class = BookingSerializer
     permission_classes = [permissions.IsAuthenticated]
@@ -53,7 +52,7 @@ class UserBookingsListAPIView(generics.ListAPIView):
     def get_queryset(self):
         return Booking.objects.filter(user=self.request.user).order_by('-booking_date')
 
-# Booking detail (user or admin)
+
 class BookingDetailAPIView(generics.RetrieveAPIView):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
@@ -66,7 +65,7 @@ class BookingDetailAPIView(generics.RetrieveAPIView):
             raise PermissionDenied()
         return obj
 
-# Admin: update flight status
+
 @api_view(['PUT'])
 @permission_classes([permissions.IsAdminUser])
 def update_flight_status(request, pk):
