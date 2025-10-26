@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Trips</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f0f4f7; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border: 1px solid #ccc; text-align: center; }
+        th { background-color: #1E90FF; color: white; }
+        a.button { padding: 8px 12px; background-color: #1E90FF; color: white; text-decoration: none; border-radius: 5px; }
+        a.button:hover { background-color: #0B60D8; }
+    </style>
+</head>
+<body>
+<h1>My Trips</h1>
+
+<table>
+    <tr>
+        <th>Flight Number</th>
+        <th>Departure</th>
+        <th>Arrival</th>
+        <th>Departure Time</th>
+        <th>Arrival Time</th>
+        <th>Seats Booked</th>
+        <th>Payment Status</th>
+        <th>Booked At</th>
+    </tr>
+    {% for booking in bookings %}
+    <tr>
+        <td>{{ booking.flight.flight_number }}</td>
+        <td>{{ booking.flight.departure_airport }}</td>
+        <td>{{ booking.flight.arrival_airport }}</td>
+        <td>{{ booking.flight.departure_datetime|date:"Y-m-d H:i" }}</td>
+        <td>{{ booking.flight.arrival_datetime|date:"Y-m-d H:i" }}</td>
+        <td>{{ booking.seats_booked }}</td>
+        <td>{{ booking.payment_status }}</td>
+        <td>{{ booking.booked_at|date:"Y-m-d H:i" }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="8">No bookings yet.</td></tr>
+    {% endfor %}
+</table>
+
+<a href="{% url 'flight_list' %}" class="button">Search Flights</a>
+<a href="{% url 'home' %}" class="button">Back to Home</a>
+</body>
+</html>

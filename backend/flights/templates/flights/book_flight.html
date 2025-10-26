@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Flight</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f0f4f7; }
+        .button { padding: 8px 12px; background-color: #1E90FF; color: white; text-decoration: none; border-radius: 5px; }
+        .button:hover { background-color: #0B60D8; }
+        input { padding: 5px; margin: 5px 0; width: 100px; }
+        .message { margin-top: 10px; color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+<h1>Book Flight: {{ flight.flight_number }}</h1>
+
+<p><strong>Departure:</strong> {{ flight.departure_airport }} at {{ flight.departure_datetime|date:"Y-m-d H:i" }}</p>
+<p><strong>Arrival:</strong> {{ flight.arrival_airport }} at {{ flight.arrival_datetime|date:"Y-m-d H:i" }}</p>
+<p><strong>Seats Available:</strong> {{ flight.seats_available }}</p>
+<p><strong>Price:</strong> ${{ flight.price }}</p>
+
+<form method="POST">
+    {% csrf_token %}
+    <label>Number of Seats:</label>
+    <input type="number" name="seats" value="1" min="1" max="{{ flight.seats_available }}">
+    <button type="submit">Book Now</button>
+</form>
+
+{% if messages %}
+<ul>
+    {% for message in messages %}
+        <li class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<a href="{% url 'flight_list' %}" class="button">Back to Flight List</a>
+</body>
+</html>

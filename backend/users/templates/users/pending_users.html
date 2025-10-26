@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pending Users - AirBooking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+            background-color: #f0f4f7;
+        }
+        h1 {
+            color: #1E90FF;
+            text-align: center;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #1E90FF;
+            color: white;
+        }
+        .button {
+            padding: 8px 16px;
+            margin: 2px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .approve {
+            background-color: #28a745;
+        }
+        .approve:hover {
+            background-color: #218838;
+        }
+        .reject {
+            background-color: #dc3545;
+        }
+        .reject:hover {
+            background-color: #c82333;
+        }
+        .back {
+            display: block;
+            width: 120px;
+            margin: 20px auto;
+            text-align: center;
+            background-color: #1E90FF;
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .back:hover {
+            background-color: #0B60D8;
+        }
+        .message {
+            width: 80%;
+            margin: 10px auto;
+            text-align: center;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pending Users</h1>
+
+    {% if messages %}
+        <div class="message">
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    {% if pending_users %}
+        <table>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+            {% for user in pending_users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <a href="{% url 'approve_user' user.id 'approve' %}" class="button approve">Approve</a>
+                    <a href="{% url 'approve_user' user.id 'reject' %}" class="button reject">Reject</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p style="text-align:center;">No pending users at the moment.</p>
+    {% endif %}
+
+    <a href="{% url 'home' %}" class="back">Back to Home</a>
+</body>
+</html>

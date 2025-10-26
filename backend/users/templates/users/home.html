@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AirBooking Home</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 100px; background-color: #f0f4f7; }
+        h1 { color: #1E90FF; }
+        .button { display: inline-block; margin: 10px; padding: 15px 30px; font-size: 18px; text-decoration: none; background-color: #1E90FF; color: white; border-radius: 8px; transition: 0.3s; }
+        .button:hover { background-color: #0B60D8; }
+        .message { margin-top: 20px; color: green; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to AirBooking</h1>
+
+    {% if user.is_authenticated %}
+        <p>Hello, <strong>{{ user.username }}</strong>!</p>
+
+        {% if user.is_staff %}
+            <a href="{% url 'pending_users' %}" class="button">Approve Users</a>
+            <a href="{% url 'admin:index' %}" class="button">Admin Dashboard</a>
+        {% else %}
+            <a href="{% url 'flight_list' %}" class="button">Search Flights</a>
+            <a href="{% url 'my_trips' %}" class="button">My Trips</a>
+        {% endif %}
+
+        <a href="{% url 'logout' %}" class="button">Logout</a>
+    {% else %}
+        <a href="{% url 'register' %}" class="button">Register</a>
+        <a href="{% url 'login' %}" class="button">Login</a>
+        <a href="{% url 'admin:login' %}" class="button">Admin Login</a>
+    {% endif %}
+
+    {% if messages %}
+        <div class="message">
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</body>
+</html>

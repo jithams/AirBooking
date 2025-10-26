@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flight List</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f0f4f7; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border: 1px solid #ccc; text-align: center; }
+        th { background-color: #1E90FF; color: white; }
+        a.button { padding: 8px 12px; background-color: #1E90FF; color: white; text-decoration: none; border-radius: 5px; }
+        a.button:hover { background-color: #0B60D8; }
+        form { margin-bottom: 20px; }
+        input { padding: 5px; margin-right: 10px; }
+    </style>
+</head>
+<body>
+<h1>Available Flights</h1>
+
+<form method="GET">
+    <input type="text" name="departure" placeholder="Departure Airport" value="{{ request.GET.departure }}">
+    <input type="text" name="arrival" placeholder="Arrival Airport" value="{{ request.GET.arrival }}">
+    <button type="submit">Search</button>
+</form>
+
+<table>
+    <tr>
+        <th>Flight Number</th>
+        <th>Departure</th>
+        <th>Arrival</th>
+        <th>Departure Time</th>
+        <th>Arrival Time</th>
+        <th>Seats Available</th>
+        <th>Price</th>
+        <th>Action</th>
+    </tr>
+    {% for flight in flights %}
+    <tr>
+        <td>{{ flight.flight_number }}</td>
+        <td>{{ flight.departure_airport }}</td>
+        <td>{{ flight.arrival_airport }}</td>
+        <td>{{ flight.departure_datetime|date:"Y-m-d H:i" }}</td>
+        <td>{{ flight.arrival_datetime|date:"Y-m-d H:i" }}</td>
+        <td>{{ flight.seats_available }}</td>
+        <td>${{ flight.price }}</td>
+        <td>
+            {% if flight.seats_available > 0 %}
+                <a href="{% url 'book_flight' flight.id %}" class="button">Book</a>
+            {% else %}
+                Full
+            {% endif %}
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="8">No flights found.</td></tr>
+    {% endfor %}
+</table>
+
+<a href="{% url 'home' %}" class="button">Back to Home</a>
+</body>
+</html>
